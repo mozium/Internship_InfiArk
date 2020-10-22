@@ -7,7 +7,7 @@ db = SQLAlchemy()
 
 # mysql connection setting
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:C0rvinus@IP:3306/web"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:666666@IP:3306/web"
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://user_name:password@IP:3306/db_name"
 
 db.init_app(app)
