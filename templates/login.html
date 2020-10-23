@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='login.css') }}">
+        <!--Basic settings above-->
+
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function(){
+                $("#tabs").tabs();
+            });
+        </script>
+        <!--Tabs code above-->
+
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!--Bootstrap code-->
+
+    </head>
+    
+    <body>
+        <!--Header Section-->
+        <div class="toppane">
+            <p id="header">智慧能源預測</p>
+        </div>
+        
+        <!--Tabs Section-->
+        <div class="tabpane">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">Login</a></li>
+                    <li><a href="#tabs-2">Registration</a></li>
+                </ul>
+                <div id="tabs-1">
+                    <div class="display">
+                        <center>
+                        <br><br><br>
+                        <p class="content">Registered users can enter their usernames and passwords to login.<br>Unregistered 
+                            users can choose to register at the registration section of the other tab, or <br>simply 
+                            click "login" to enter the forcasting platform without loggin in.
+                        </p><br>
+                        <form action="/login" method="POST">
+                            <table>
+                                <tr>
+                                    <td style="text-align:right">username: </td>
+                                    <td><input type="text" id="usr" name="usr"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">password: </td>
+                                    <td><input type="text" id="pwd" name="pwd" style="-webkit-text-security: disc;"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input type="submit" id="login" name="login" value="login">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                        </center>
+                    </div>
+                </div>
+                <div id="tabs-2">
+                    <div class="display">
+                        <center>
+                        <br><br><br>
+                        <form action="/login" method="POST">
+                            <table>
+                                <tr>
+                                    <td style="text-align:right">username: </td>
+                                    <td><input type="text" id="rusr" name="rusr"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">password: </td>
+                                    <td><input type="text" id="rpwd" name="rpwd"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">confirmation: </td>
+                                    <td><input type="text" id="rpwd2" name="rpwd2"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right">nickname: </td>
+                                    <td><input type="text" id="rnckn" name="rnckn"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input type="submit" id="register" name="register" value="register"></td>
+                                </tr>
+                            </table>
+                        </form>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
