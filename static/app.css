@@ -58,56 +58,8 @@ body{
     height: 87%;
 }
 
-#rleftpane{
-    position: relative;
-    float: left;
-    width: 50%;
-}
-
-#rrightpane{
-    position: relative;
-    float: left;
-    width: 50%;
-    margin-top: 10px;
-}
-
-.rinput{
-    width: 100%;
-}
-
-.rcinput{
-    width: 85%;
-}
-
-.manage_panel{
-    width: 100%;
-    height: 92%;
-    overflow: auto;
-    border: 1px solid;
-}
-
+/*
 .manage_panel::-webkit-scrollbar{
     display: none;
 }
-
-.bframea{
-    text-align: justify;
-    color:#222222;
-    text-decoration: none;
-    margin: 1px;
-    padding: 4px;
-    background-color: #cccccc;
-}
-
-.bframeb{
-    text-align: justify;
-    color:#222222;
-    text-decoration: none;
-    margin: 1px;
-    padding: 4px;
-    background-color: gainsboro;
-}
-
-#block{
-    width: 99%;
-}
+*/
