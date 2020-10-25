@@ -19,10 +19,6 @@ body{
     color: black;
 }
 
-.label{
-    font-weight: bold;
-}
-
 .vertical-center{
     margin: 0;
     position: relative;

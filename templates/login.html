@@ -1,6 +1,6 @@
 <html>
     <head>
-        <link rel=stylesheet type="text/css" href="{{ url_for('statics', filename='login.css') }}">
+        <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='app.css') }}">
         <!--CSS above-->
 
         <meta charset="utf-8">
@@ -33,8 +33,8 @@
         <div class="tabpane">
             <div id="tabs">
                 <ul>
-                    <li><a href="#tabs-1">Login</a></li>
-                    <li><a href="#tabs-2">Registration</a></li>
+                    <li><a href="#tabs-1">登入</a></li>
+                    <li><a href="#tabs-2">註冊</a></li>
                 </ul>
                 <div id="tabs-1">
                     <div class="display">
@@ -47,17 +47,17 @@
                         <form action="/login" method="POST">
                             <table>
                                 <tr>
-                                    <td style="text-align:right">username: </td>
+                                    <td style="text-align:right">帳號：</td>
                                     <td><input type="text" id="usr" name="usr"></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:right">password: </td>
+                                    <td style="text-align:right">密碼：</td>
                                     <td><input type="text" id="pwd" name="pwd" style="-webkit-text-security: disc;"></td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <input type="submit" id="login" name="login" value="login">
+                                        <input type="submit" id="login" name="login" value="登入">
                                     </td>
                                 </tr>
                             </table>
@@ -72,24 +72,20 @@
                         <form action="/login" method="POST">
                             <table>
                                 <tr>
-                                    <td style="text-align:right">username: </td>
+                                    <td style="text-align:right">帳號</td>
                                     <td><input type="text" id="rusr" name="rusr"></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:right">password: </td>
+                                    <td style="text-align:right">密碼</td>
                                     <td><input type="text" id="rpwd" name="rpwd"></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:right">confirmation: </td>
+                                    <td style="text-align:right">再次確認</td>
                                     <td><input type="text" id="rpwd2" name="rpwd2"></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:right">nickname: </td>
-                                    <td><input type="text" id="rnckn" name="rnckn"></td>
-                                </tr>
-                                <tr>
                                     <td></td>
-                                    <td><input type="submit" id="register" name="register" value="register"></td>
+                                    <td><input type="submit" id="register" name="register" value="註冊"></td>
                                 </tr>
                             </table>
                         </form>
