@@ -1,0 +1,308 @@
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Banner
+- Modal
+- Tabs
+- Main Dashboard Tab
+- Measurement Tab
+- Tables/Dropdown
+- Containers
+- Media Queries
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#app-container * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+body {
+    background-color: #1e2130;
+    color: #f3f5f4;
+    font-family: "Open Sans", sans-serif;
+    width: 100%;
+    height: 100vh;
+    max-width: 100% !important;
+    margin: 0;
+}
+
+#big-app-container {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;     /* *? */
+    align-items: center;
+    padding: 0 6rem;
+}
+
+.banner {
+    /*
+    flex-direction: row;
+    */
+    height: fit-content;    /* *這啥 */
+    background-color: #1e2130;
+    display: flex;          /* 搭配下面的justify-content*/
+    justify-content: space-between;
+    border-bottom: 1px solid #4B5460;
+    padding: 1rem 10rem;
+    width: 100%;
+}
+
+.banner h5 {
+    font-family: 'Open Sans Semi Bold', sans-serif;
+    font-weight: 500;
+    line-height: 1.2;
+    font-size: 2rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+}
+
+.banner h6 {
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+
+.banner button {
+    color: #95969A;
+    margin-right: 10px;
+    height: 3rem;
+    line-height: 3rem;
+}
+
+#banner-logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.banner button:hover {
+    color: #92e0d3;
+    border-color: whitesmoke;
+}
+  
+.banner Img {
+    height: 3rem;
+    margin: 0px 10px;
+}
+
+/* Tabs
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#tabs {
+    width: 100%;
+  }
+  
+  .custom-tabs {
+    background-color: #1E2130;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    height: fit-content;
+    cursor: pointer;
+  }
+  
+  #Specs-tab.custom-tab, #Control-chart-tab.custom-tab {
+    background-color: #161a28;
+    letter-spacing: 1px;
+    color: inherit;
+    border: 0;
+    border-bottom: #1E2130 solid 4px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 18px;
+  }
+  
+  #Specs-tab.custom-tab--selected, #Control-chart-tab.custom-tab--selected {
+    border-bottom: #91dfd2 solid 4px !important;
+  }
+  
+  #Specs-tab.custom-tab {
+    margin-right: 3px;
+  }
+  
+  #Control-chart-tab.custom-tab {
+    margin-left: 3px;
+  }
+
+
+/* Tabs
+這邊有很多地方要修改, 但有點complicated, 先等著
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#tabs {
+    width: 100%;
+  }
+  
+  .custom-tabs {
+    background-color: #1E2130;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    height: fit-content;
+    cursor: pointer;
+  }
+  
+  #models-tab-1.custom-tab, #models-tab-2.custom-tab {
+    background-color: #161a28;
+    letter-spacing: 1px;
+    color: inherit;
+    border: 0;
+    border-bottom: #1E2130 solid 4px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 18px;
+  }
+  
+  #models-tab-1.custom-tab--selected, #models-tab-2.custom-tab--selected {
+    border-bottom: #91dfd2 solid 4px !important;
+  }
+  
+  #models-tab-1.custom-tab {
+    margin-right: 3px;
+  }
+  
+  #models-tab-2.custom-tab {
+    margin-left: 3px;
+  }
+  
+  .section-banner {
+    color: darkgray;
+    font-size: 1.5rem;
+    text-align: left;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #4b5460;
+  }
+
+/* The Modal (background) */
+.modal {
+    display: none; /*Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1005; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.markdown-container {
+    width: 60vw;
+    margin: 10% auto;
+    padding: 10px 15px;
+    background-color: #2d3038;
+}
+
+.close-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+}
+
+.closeButton {
+    padding: 0 15px;
+    font-weight: normal;
+    float: right;
+    height: 100%;
+    border: none;
+}
+
+.closeButton:hover {
+    color: #91dfd2;
+}
+
+
+#quick-stats.row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;  /* 均勻排列每個元素, 讓每個元素間隔相等。 */
+    align-items: center;
+}
+
+
+/* Container
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#app-container {
+    background: #161a28;
+    margin: 1rem 2rem;
+    max-width: 100%;
+    width: 100%;
+    /*
+    height: calc(100vh - 10rem - 1px);  有這個會整個膨風
+    */
+}
+
+#app-content {
+    background: inherit;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+#status-container {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+  
+#graphs-container {
+    display: flex;
+    flex-direction: column;
+    flex: 3 1;
+    max-width: calc(75%);
+    width: 50%;
+}
+
+
+/* Tab 2 Quick stats
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#quick-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-right: #1E2130 solid 0.8rem;
+    flex: 1 1;
+    padding: 2rem;
+    max-width: 25%;
+}
+  
+#model-led {
+    /*
+    
+    width: 200px;
+
+    */
+}
+
+
+/*Button
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+#login-button {
+    width: 5rem;
+}
+
+
+/*Dropdown
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+#div-model-dropdown {
+    font-family: 'Open Sans Semi Bold', sans-serif;
+    width: 20rem;
+    color: #1E2130;
+}
