@@ -43,7 +43,7 @@ def login():
     if request.method == "POST":
         lusr = request.values['usr']
         lpwd = request.values['pwd']
-
+        
         if lpwd == usr_data[usr_data['acc']==lusr]['pwd'].iloc[0]:
             session['usr'] = str(lusr)
             return redirect("/home")
@@ -87,19 +87,6 @@ def register():
         return redirect("/")
 
 
-@app.route("/main.html", methods=['GET', 'POST'])
-def pagerefresh():
-    urls = [
-        'http://www.w3schools.com',
-        'http://techcrunch.com/',
-        'https://www.youtube.com/',
-    ]
-    iframe = random.choice(urls)
-    print(iframe)
-
-    return render_template('main.html', iframe=iframe)
-
-
 @app.route("/login")
 def lock():
     return render_template("login.html")
@@ -112,6 +99,11 @@ def logout():
 
 
 @app.errorhandler(404) # Redirecting undefined URLs
+def page_not_found(e):
+    return redirect("/")
+
+
+@app.errorhandler(500) # Redirecting "Internal Server Error"
 def page_not_found(e):
     return redirect("/")
 

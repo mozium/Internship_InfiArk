@@ -1,36 +1,108 @@
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jquery-ui.min.css') }}">        
+
+        <script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <!--Bootstrap Inclusion-->
+                
         <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='app.css') }}">
         <!--CSS above-->
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>
             $(function(){
                 $("#tabs").tabs();
             });
         </script>
-        <!--Tabs code above-->
-
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <!--Bootstrap code above-->
-
+        <!--jQuery: Tabs-->
     </head>
     
-    <body>
-        <!--Header Section-->
-        <div class="toppane">
-            <p id="header">智慧能源預測</p>
+    <body style="background-color: #5C6B73">
+        <center><img src="{{url_for('static', filename='title.png')}}" id="login_title"/></center>
+
+        <div id="account_block">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">登入</a></li>
+                    <li><a href="#tabs-2">註冊</a></li>
+                </ul>
+                <div id="tabs-1">
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">帳號</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" name="usr" aria-describedby="emailHelp" placeholder="請輸入帳號">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">密碼</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="pwd" placeholder="請輸入密碼">
+                        </div>
+                        <button type="submit" class="btn btn-primary key-btn">送出</button>
+                    </form>
+                    <!--<form action="/login" method="POST">
+                        <table>
+                            <tr>
+                                <td style="text-align:right">帳號：</td>
+                                <td><input type="text" id="usr" name="usr"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right">密碼：</td>
+                                <td><input type="text" id="pwd" name="pwd" style="-webkit-text-security: disc;"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input type="submit" id="login" name="login" value="登入">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>-->
+                </div>
+                <div id="tabs-2">
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">登入帳號</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" name="rusr" aria-describedby="emailHelp" placeholder="請輸入帳號">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">登入密碼</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="rpwd" placeholder="請輸入密碼">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">確認密碼</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="rpwd2" placeholder="請重新輸入密碼">
+                        </div>
+                        <button type="submit" class="btn btn-primary">送出</button>
+                      </form>
+                    <!--<form action="/login" method="POST">
+                        <table>
+                            <tr>
+                                <td style="text-align:right">登入帳號：</td>
+                                <td><input type="text" id="rusr" name="rusr"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right">登入密碼：</td>
+                                <td><input type="text" id="rpwd" name="rpwd"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right">確認密碼：</td>
+                                <td><input type="text" id="rpwd2" name="rpwd2"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" id="register" name="register" value="註冊"></td>
+                            </tr>
+                        </table>
+                    </form>-->   
+                </div>
+            </div>
         </div>
-        
         <!--Tabs Section-->
-        <div class="tabpane">
+        <!--<div class="tabpane">
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1">登入</a></li>
@@ -44,24 +116,6 @@
                             users can choose to register at the registration section of the other tab, or <br>simply 
                             click "login" to enter the forcasting platform without loggin in.
                         </p><br>
-                        <form action="/login" method="POST">
-                            <table>
-                                <tr>
-                                    <td style="text-align:right">帳號：</td>
-                                    <td><input type="text" id="usr" name="usr"></td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:right">密碼：</td>
-                                    <td><input type="text" id="pwd" name="pwd" style="-webkit-text-security: disc;"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <input type="submit" id="login" name="login" value="登入">
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
                         </center>
                     </div>
                 </div>
@@ -69,30 +123,11 @@
                     <div class="display">
                         <center>
                         <br><br><br>
-                        <form action="/login" method="POST">
-                            <table>
-                                <tr>
-                                    <td style="text-align:right">帳號</td>
-                                    <td><input type="text" id="rusr" name="rusr"></td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:right">密碼</td>
-                                    <td><input type="text" id="rpwd" name="rpwd"></td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:right">再次確認</td>
-                                    <td><input type="text" id="rpwd2" name="rpwd2"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><input type="submit" id="register" name="register" value="註冊"></td>
-                                </tr>
-                            </table>
-                        </form>
+
                         </center>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </body>
 </html>

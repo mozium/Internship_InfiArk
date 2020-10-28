@@ -58,6 +58,27 @@ body{
     height: 87%;
 }
 
+/*The following is written specifically for the internship project*/
+#login_title
+{
+    width: 44rem;
+    margin-top: 10rem;
+}
+
+#account_block
+{   
+    width: 22rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.key-btn
+{
+    background-color: #9DB4C0;
+    border-color: #9DB4C0;
+}
+
 /*
 .manage_panel::-webkit-scrollbar{
     display: none;
