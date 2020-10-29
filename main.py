@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 # MySQL Initialization
 import pymysql
+import pymysql.cursors
 from sqlalchemy import create_engine
 
 db_reader = pymysql.connect(
@@ -23,7 +24,6 @@ db_reader = pymysql.connect(
 
 db_writer = create_engine('mysql+pymysql://root:666666@127.0.0.1/web')
 usr_data = pd.read_sql_query("SELECT * FROM usr", db_reader)
-db_cursor = db_reader.cursor()
 
 # Session Initialization
 app.config['SECRET_KEY'] = 'InfiArk_Internship_2020'
@@ -37,54 +37,35 @@ def init():
         return render_template("login.html")
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["POST"])
 def login():
-    #login functions
     if request.method == "POST":
         lusr = request.values['usr']
         lpwd = request.values['pwd']
         
         if lpwd == usr_data[usr_data['acc']==lusr]['pwd'].iloc[0]:
             session['usr'] = str(lusr)
-            return redirect("/home")
+            return redirect("/")
         else:
             return redirect("/")
 
+
+@app.route("/register", methods=["POST"])
 def register():
-    #register functions
     if request.method == "POST":
         usr = request.values['rusr']
         pwd = request.values['rpwd']
         cnf = request.values['rpwd2']
-        nckn = request.values['rnckn']
 
         if str(pwd) == str(cnf):
+            with db_reader.cursor() as cur:
+            # Create a new record
+                sql = "INSERT INTO `usr` (`acc`, `pwd`) VALUES (%s, %s)"
+                cur.execute(sql, (usr, pwd))
+                db_reader.commit()
 
-
-            session['usr'] = usr
+            session['usr'] = str(usr)
             return redirect("/")
-            '''
-            user_list =  open("./schema/user.json", "r",encoding="utf-8")
-            user_data = json.load(user_list)
-
-            n = len(user_data)
-            nstr = str(n)
-            idstr = "p"+nstr
-    
-            nentry = {
-                "username":user,
-                "password":pwd,
-                "nickname":nckn
-            }
-
-            user_data.append(nentry)
-
-            with open(f'./schema/user.json', 'w') as json_file:
-                json.dump(user_data, json_file)
-                json_file.close()
-            '''
-    else:
-        return redirect("/")
 
 
 @app.route("/login")
@@ -98,13 +79,18 @@ def logout():
     return redirect("/")
 
 
+@app.errorhandler(400) # Redirecting "Bad Request"
+def bad_request(e):
+    return redirect("/")
+
+
 @app.errorhandler(404) # Redirecting undefined URLs
 def page_not_found(e):
     return redirect("/")
 
 
 @app.errorhandler(500) # Redirecting "Internal Server Error"
-def page_not_found(e):
+def internal_server_error(e):
     return redirect("/")
 
 

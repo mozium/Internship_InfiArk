@@ -75,8 +75,8 @@ body{
 
 .key-btn
 {
-    background-color: #9DB4C0;
-    border-color: #9DB4C0;
+    background-color: #9DB4C0 !important;
+    border-color: #9DB4C0 !important;
 }
 
 /*
