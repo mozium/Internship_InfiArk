@@ -65,7 +65,7 @@ def build_banner():
     )
 
 
-def build_tabs(nums_tabs=2, model_names=['1', '2']):
+def build_tabs(nums_tabs=2, model_names=['Model-Training-Page', 'Model-Dashboard-Page']):
     """
         利用tab轉換model觀察儀表板。
     """
@@ -74,8 +74,8 @@ def build_tabs(nums_tabs=2, model_names=['1', '2']):
     for i in range(nums_tabs):
         tab = dcc.Tab(
                 id=f'models-tab-{model_names[i]}',
-                label=f'model {model_names[i]}',
-                value=f'model {model_names[i]}',
+                label=f'{model_names[i]}',
+                value=f'{model_names[i]}',
                 className='custom-tab',
                 selected_className='custom-tab--selected',
                 )
@@ -147,7 +147,7 @@ def build_quick_stats_panel():
             html.Div(
                 id='card-1',
                 children=[
-                    html.P('Model ID'),
+                    html.P('Machine ID'),
                     daq.LEDDisplay(
                         # LED
                         id='model-led',
@@ -197,7 +197,7 @@ def build_chart_panel(model_id):
     X = list(range(len(data['y_real'])))
 
     fig = go.Figure(
-        layout=go.Layout(title=go.layout.Title(text='Show something!')),
+        layout=go.Layout(title=go.layout.Title(text='kw_kwh')),
     )
     fig.add_trace(go.Scatter(x=X, y=data['y_pred'], mode='lines', name='pred'))
     fig.add_trace(go.Scatter(x=X, y=data['y_real'], mode='lines', name='real'))
@@ -319,7 +319,11 @@ app.layout = html.Div(
         # ?
         html.Div(
             id='app-content',
-            children=['hello'],
+            children=html.Iframe(
+                src='http://localhost:8003',
+                width=700,
+                height=800,
+            ),
         ),
         generate_modal(),
         generate_piechart('pie-chart'),
@@ -333,8 +337,12 @@ app.layout = html.Div(
     [Input('app-tabs', 'value'), Input('model-dropdown', 'value')],
 )
 def render_tab_content(tab_switch, model_id):
-    if tab_switch == 'model 1':
-        return ['model 1 app content!']
+    if tab_switch == 'Model-Training-Page':
+        return html.Iframe(
+            src='http://localhost:8003',
+            width=700,
+            height=800,
+        )
     return html.Div(
         id='status-container',
         children=[

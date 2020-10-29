@@ -1,3 +1,3 @@
 
-alert('JS script is running')
+// alert('JS script is running')
 

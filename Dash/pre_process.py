@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, LSTM, GRU, SimpleRNN
 from tensorflow.keras.layers import concatenate, add
@@ -19,7 +20,7 @@ def pre_process(x_data, y_data, random_state: int=42,
     """
         資料前處理：資料切分、標準化
     """
-    from sklearn.preprocessing import StandardScaler, MinMaxScaler
+    
 
     x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.25, random_state=random_state, shuffle=shuffle)
     # 前168的是可以標準化的數值
@@ -54,10 +55,6 @@ def get_predict_data(x_test, time_step=24, is_rnn=False):
         return x_test[0][0:totals:24], x_test[1][0:totals:24]
 
 def get_real_pred(y_test, time_step=24, is_rnn=False):
-    # y_test: 
-    # print(y_test)
-    # print(y_test.shape)
-    # print(time_step)
     return y_test[:, 0:time_step].flatten()
 
 
@@ -82,7 +79,6 @@ def predict(id_=None, model=None, is_rnn=True):
     y = y.drop(columns=['id'])
 
     # 前處理, 標準化
-    from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=42, shuffle=False)
 
@@ -110,28 +106,17 @@ def predict(id_=None, model=None, is_rnn=True):
     x_test_rnn = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
 
 
-    # dnn: 1 layer
-    # dnn = tf.keras.models.load_model(f'dnn_{id_}.h5')
     y_real = get_real_pred(get_predict_data(y_test))
-    # y_pred_dnn = get_real_pred(dnn.predict(get_predict_data(x_test)))
-
-    # mape = MAPE(y_real, y_pred_dnn)
-
-
-    # gru: 3+3
-    # gru = tf.keras.models.load_model(f'./drive/My Drive/models/gru_{id_}.h5')
-    y_pred_gru = get_real_pred(model.predict([get_predict_data(x_test_rnn[:, 168:]), get_predict_data(x_test_rnn[:, 0:168])]))
-    
-    mape = MAPE(y_real, y_pred_gru)
     y = get_real_pred(get_predict_data(y.values))
-
-    return y_real, y_pred_gru, mape, y
-    # lstm: 2+2
-    # lstm = tf.keras.models.load_model(f'./drive/My Drive/models/lstm_{id_}.h5')
-    # y_pred_lstm = get_real_pred(lstm.predict([get_predict_data(x_test_rnn[:, 168:]), get_predict_data(x_test_rnn[:, 0:168])]))
+    if not is_rnn:
+        y_pred = get_real_pred(model.predict(get_predict_data(x_test)))
+        mape = MAPE(y_real, y_pred)
+    else:
+        y_pred = get_real_pred(model.predict([get_predict_data(x_test_rnn[:, 168:]), get_predict_data(x_test_rnn[:, 0:168])]))
+        mape = MAPE(y_real, y_pred)
     
-    # mape = MAPE(y_real, y_pred_lstm)
-
+    
+    return y_real, y_pred, mape, y
 
 
 
