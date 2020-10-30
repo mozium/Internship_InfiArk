@@ -34,7 +34,8 @@
         <!--Header Section-->
         <div class="toppane">
             <img src="{{url_for('static', filename='main_title.png')}}" id="main_title"/>
-            <span style="margin-top: 50%; margin-bottom: auto;">
+            <span style="margin-top: 50%; margin-bottom: auto; color: white">
+                使用者帳號：{{ usrname }}
                 <button type="button" class="btn btn-light float-right" onclick="logout()">登出</button>
             </span>
         </div>

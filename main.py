@@ -31,8 +31,10 @@ app.config['SECRET_KEY'] = 'InfiArk_Internship_2020'
 
 @app.route("/")
 def init():
-    if (session.get('usr')):
-        return render_template("main.html")
+    usrname = session.get('usr')
+    print(usrname)
+    if (usrname):
+        return render_template("main.html", usrname=usrname)
     else:
         return render_template("login.html")
 
