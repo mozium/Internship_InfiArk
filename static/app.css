@@ -19,17 +19,9 @@ body{
     color: black;
 }
 
-.vertical-center{
-    margin: 0;
-    position: relative;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
-
 .toppane{
     width: 100%;
-    height: 6.5%;
+    height: 7.5%;
     background-color: steelblue;
 }
 
@@ -48,21 +40,46 @@ body{
 
 .tabpane{
     width: 100%;
-    height: 90%;
+    height: 92.5%;
     color: white;
     border-collapse: collapse;
 }
 
-.display{
-    width: 100%;
-    height: 87%;
+/*The following is written specifically for the internship project*/
+.vertical-center{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
-/*The following is written specifically for the internship project*/
+.display
+{
+    width: 100%;
+    height: 90%;
+}
+
+.dash_display
+{
+    width: 100%;
+    height: 100%;
+}
+
+.dash_display::-webkit-scrollbar
+{
+    display: none;
+}
+
 #login_title
 {
     width: 44rem;
     margin-top: 10rem;
+}
+
+#logout_block
+{
+    margin:0;
 }
 
 #account_block
@@ -73,14 +90,13 @@ body{
     margin-right: auto;
 }
 
+#main_title
+{   
+    height: 100%;
+}
+
 .key-btn
 {
     background-color: #9DB4C0 !important;
     border-color: #9DB4C0 !important;
 }
-
-/*
-.manage_panel::-webkit-scrollbar{
-    display: none;
-}
-*/

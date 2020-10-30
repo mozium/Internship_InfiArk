@@ -1,5 +1,6 @@
 # cache files from runtime
 /__pycache__
+/Dash/__pycache__
 
 # macOS system generated file
 **/.DS_Store
