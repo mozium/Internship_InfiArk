@@ -47,13 +47,16 @@ def model_api(id_):
     model = tf.keras.models.load_model(
         filepath=f'./models/gru_{id_}_shuffle_400.h5'
     )
-    y_real, y_pred, mape, y_ori = predict(id_=id_, model=model)
+    y_real, y_pred, mape, mse, mae, y_ori = predict(id_=id_, model=model)
     # make data jsonify to pass to client
     data_pass = {}
     data_pass['y_real'] = list(y_real)
     data_pass['y_pred'] = list(map(lambda x: float(x), y_pred))  # TypeError: Object of type float32 is not JSON serializable
     data_pass['mape'] = mape
+    data_pass['mse'] = float(mse)
+    data_pass['mae'] = float(mae)
     data_pass['y_ori'] = list(y_ori)
+    # print(data_pass)
     
     data_json = jsonify({'data': data_pass})
     json.dump(data_pass, open(f'./models/gru/json/gru_{id_}_shuffle_400.json', 'w'))
@@ -61,4 +64,4 @@ def model_api(id_):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=8008)

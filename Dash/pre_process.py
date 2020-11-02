@@ -10,7 +10,7 @@ from tensorflow.keras.layers import concatenate, add
 from tensorflow.keras.layers import Dropout, BatchNormalization, Input, Embedding
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.losses import mean_absolute_percentage_error
+from tensorflow.keras.losses import mean_absolute_percentage_error, mean_squared_error, mean_absolute_error
 
 
 
@@ -110,13 +110,14 @@ def predict(id_=None, model=None, is_rnn=True):
     y = get_real_pred(get_predict_data(y.values))
     if not is_rnn:
         y_pred = get_real_pred(model.predict(get_predict_data(x_test)))
-        mape = MAPE(y_real, y_pred)
     else:
         y_pred = get_real_pred(model.predict([get_predict_data(x_test_rnn[:, 168:]), get_predict_data(x_test_rnn[:, 0:168])]))
-        mape = MAPE(y_real, y_pred)
+    mape = MAPE(y_real, y_pred)
+    mse = mean_squared_error(y_true=y_real, y_pred=y_pred).numpy()
+    mae = mean_absolute_error(y_true=y_real, y_pred=y_pred).numpy()
     
     
-    return y_real, y_pred, mape, y
+    return y_real, y_pred, mape, mse, mae, y
 
 
 

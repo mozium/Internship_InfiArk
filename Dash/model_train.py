@@ -48,7 +48,7 @@ model_mapping = {
 }
 
 filename = None
-
+id_ = 1110307043
 
 # 視覺化元素建立
 def build_upload(div_id, upload_id, is_out=False):
@@ -132,10 +132,10 @@ def parse_content(contents, filename, date):
         html.H5(filename),
         html.H6(datetime.datetime.fromtimestamp(date)),
 
-        dash_table.DataTable(
-            data=df.to_dict('records'),
-            columns=[{'name': i, 'id': i} for i in df.columns],
-        ),
+        # dash_table.DataTable(
+        #     data=df.to_dict('records'),
+        #     columns=[{'name': i, 'id': i} for i in df.columns],
+        # ),
 
         html.Hr(),
         # 
@@ -178,6 +178,7 @@ app.layout = html.Div([
      Input('loss-radio-select', 'value')]
      )
 def update_model_train(n_clicks, model_str, loss_str):
+    global id_
     model_func = model_mapping[model_str]
     model = model_func(loss=loss_str)
     print(model_str, n_clicks)
@@ -188,10 +189,12 @@ def update_model_train(n_clicks, model_str, loss_str):
             is_rnn= False
         else:
             is_rnn = True
-        model = train_model(model=model, model_str=model_str, x_filename='./datasets/x_1110307018.csv', y_filename='./datasets/y_1110307018.csv', shuffle=True)
+        model = train_model(model=model, model_str=model_str, x_filename=f'./datasets/x_{id_}.csv', y_filename=f'./datasets/y_{id_}.csv', shuffle=True)
         model.save(f'./models/dash/{model_str}_{n_clicks}.h5')
-        y_real, y_pred_gru, mape, y = predict(id_=1110307018, model=model, is_rnn=is_rnn)
+        y_real, y_pred, mape, mse, mae, y = predict(id_=id_, model=model, is_rnn=is_rnn)
         print('MAPE: ', mape)
+        print('MSE: ', mse)
+        print('MAE: ', mae)
         print('訓練結束')
         if n_clicks % 2 == 0:
             return '請再一次點擊按鈕繼續訓練', '暫停', 'START'

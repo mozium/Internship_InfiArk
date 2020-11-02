@@ -145,7 +145,7 @@ body {
   cursor: pointer;
 }
 
-#models-tab-Model-Training-Page.custom-tab, #models-tab-Model-Dashboard-Page.custom-tab {
+#models-tab-Model-Training-Page.custom-tab, #models-tab-Model-Dashboard-Page.custom-tab, #models-tab-Model-Anomaly-Page.custom-tab {
   background-color: #161a28;
   letter-spacing: 1px;
   color: inherit;
@@ -159,7 +159,7 @@ body {
   height: 18px;
 }
 
-#models-tab-Model-Training-Page.custom-tab--selected, #models-tab-Model-Dashboard-Page.custom-tab--selected {
+#models-tab-Model-Training-Page.custom-tab--selected, #models-tab-Model-Dashboard-Page.custom-tab--selected, #models-tab-Model-Anomaly-Page.custom-tab--selected {
   border-bottom: #91dfd2 solid 4px !important;
 }
 
@@ -168,6 +168,10 @@ body {
 }
 
 #models-tab-Model-Dashboard-Page.custom-tab {
+  margin-left: 3px;
+}
+
+#models-tab-Model-Anomaly-Page.custom-tab {
   margin-left: 3px;
 }
 
@@ -305,4 +309,10 @@ body {
     font-family: 'Open Sans Semi Bold', sans-serif;
     width: 20rem;
     color: #1E2130;
+}
+
+#div-loss-dropdown {
+  font-family: 'Open Sans Semi Bold', sans-serif;
+  width: 10rem;
+  color: #1E2130;
 }

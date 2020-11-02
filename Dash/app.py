@@ -10,6 +10,12 @@ import pandas as pd
 import requests
 
 
+def get_data_from_api(url='http://localhost:8000/model/gru/', id_='1110307043'):
+    resp = requests.get(url + str(id_))
+    resp = resp.json()['data']
+    return resp
+
+
 # app
 app = dash.Dash(
     name=__name__
@@ -29,8 +35,20 @@ model_ids = [
     1330620056, 1441945123
 ]
 model_ids_options = []
-for id_ in model_ids:
-    model_ids_options.append({'label': f'Model: {id_}', 'value': str(id_)})
+loss_options = [
+    {'label': 'MSE', 'value': 'mse'},
+    {'label': 'MAE', 'value': 'mae'},
+    {'label': 'MAPE', 'value': 'mape'},
+]
+for id_ in list(model_ids):
+    model_ids_options.append({'label': f'Machine: {id_}', 'value': str(id_)})
+
+#     data = get_data_from_api(id_=id_)
+#     mape, mse, mae = data['mape'], data['mse'], data['mae']
+#     X = list(range(len(data['y_real'])))
+#     if mape > 30:
+#         model_ids_options.pop(model_ids.index(id_))
+#         model_ids.pop(model_ids.index(id_))
 
 
 # function set
@@ -47,7 +65,7 @@ def build_banner():
                 children=[
                     html.H5('Infiark - 企業用電量預測&異常檢測'),
                     html.H6('企業儀表板'),
-                    build_button('buttons', 'login-button', 'buttons', '登入'),
+                    # build_button('buttons', 'login-button', 'buttons', '登入'),
                 ],
             ),
             html.Div(
@@ -64,7 +82,7 @@ def build_banner():
         ]
     )
 
-
+# 'Model-Anomaly-Page'
 def build_tabs(nums_tabs=2, model_names=['Model-Training-Page', 'Model-Dashboard-Page']):
     """
         利用tab轉換model觀察儀表板。
@@ -158,28 +176,28 @@ def build_quick_stats_panel():
                     ),
                 ],
             ),
-            html.Div(
-                id='card-2',
-                children=[
-                    html.P('Gauge: 預測準度顏色變化'),
-                    daq.Gauge(
-                        id='progress-gauge',
-                        max=100,
-                        min=0,
-                        showCurrentValue=True,  # default size 200 pixel
-                    ),
-                ],
-            ),
-            html.Div(
-                id='utility-card',
-                children=[
-                    daq.StopButton(
-                        id='stop-button',
-                        size=160,
-                        n_clicks=0
-                    )
-                ]
-            )
+            # html.Div(
+            #     id='card-2',
+            #     children=[
+            #         html.P('Gauge: 預測準度顏色變化'),
+            #         daq.Gauge(
+            #             id='progress-gauge',
+            #             max=100,
+            #             min=0,
+            #             showCurrentValue=True,  # default size 200 pixel
+            #         ),
+            #     ],
+            # ),
+            # html.Div(
+            #     id='utility-card',
+            #     children=[
+            #         daq.StopButton(
+            #             id='stop-button',
+            #             size=160,
+            #             n_clicks=0
+            #         )
+            #     ]
+            # )
         ]
     )
 
@@ -194,13 +212,14 @@ def build_chart_panel(model_id):
     """
     # *** 這邊可以改變圖的style設計
     data = get_data_from_api(id_=model_id)
+    mape, mse, mae = data['mape'], data['mse'], data['mae']
     X = list(range(len(data['y_real'])))
 
     fig = go.Figure(
-        layout=go.Layout(title=go.layout.Title(text='kw_kwh')),
+        layout=go.Layout(title=go.layout.Title(text=f'MAPE: {round(mape, 3)}  /  MSE: {round(mse, 3)}  /  MAE: {round(mae, 3)}')),
     )
-    fig.add_trace(go.Scatter(x=X, y=data['y_pred'], mode='lines', name='pred'))
-    fig.add_trace(go.Scatter(x=X, y=data['y_real'], mode='lines', name='real'))
+    fig.add_trace(go.Scatter(x=X, y=data['y_pred'], mode='lines', name='預測'))
+    fig.add_trace(go.Scatter(x=X, y=data['y_real'], mode='lines', name='實際'))
     return html.Div(
         id='control-trends-container',
         className='twelve columns',
@@ -298,10 +317,7 @@ def generate_dropdown(div_id, className, options, searchable, placeholder):
 #     )
 
 
-def get_data_from_api(url='http://localhost:8000/model/gru/', id_='1110307018'):
-    resp = requests.get(url + str(id_))
-    resp = resp.json()['data']
-    return resp
+
 
 
 # app layout
@@ -316,14 +332,20 @@ app.layout = html.Div(
             ]
         ),
         generate_dropdown('model-dropdown', 'model-dropdown', model_ids_options, True, 'Search a model id'),
+        html.Br(),
+        generate_dropdown('loss-dropdown', 'loss-dropdown', loss_options, False, 'Search a metrics'),
         # ?
         html.Div(
             id='app-content',
-            children=html.Iframe(
-                src='http://localhost:8003',
-                width=700,
-                height=800,
-            ),
+            children=[
+                html.Br(),
+                html.Iframe(
+                    src='http://localhost:8003',
+                    width=1500,
+                    height=800,
+                ),
+                ]
+            
         ),
         generate_modal(),
         generate_piechart('pie-chart'),
@@ -338,18 +360,22 @@ app.layout = html.Div(
 )
 def render_tab_content(tab_switch, model_id):
     if tab_switch == 'Model-Training-Page':
-        return html.Iframe(
-            src='http://localhost:8003',
-            width=700,
-            height=800,
-        )
+        return [
+            html.Br(),
+            html.Iframe(
+                src='http://localhost:8003',
+                width=1500,
+                height=800,
+            ),
+        ]
+    elif tab_switch == 'Model-Anomaly-Page':
+        return 'wait a minute.'
     return html.Div(
         id='status-container',
         children=[
             build_quick_stats_panel(),
             html.Div(
                 id='graphs-container',
-                #children=list('之後補'),
                 children=[build_chart_panel(model_id)]
             ),
             
