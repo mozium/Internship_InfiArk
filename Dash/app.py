@@ -9,6 +9,10 @@ import plotly.express as px
 import pandas as pd
 import requests
 
+# 時間模組
+import datetime
+import time
+
 
 def get_data_from_api(url='http://localhost:8000/model/gru/', id_='1110307043'):
     resp = requests.get(url + str(id_))
@@ -50,6 +54,16 @@ for id_ in list(model_ids):
 #         model_ids_options.pop(model_ids.index(id_))
 #         model_ids.pop(model_ids.index(id_))
 
+# 搞時間
+day_start = datetime.datetime.strptime('2019-01-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+day_end = datetime.datetime.strptime('2020-02-29 23:00:00', '%Y-%m-%d %H:%M:%S')
+time_delta=datetime.timedelta(hours=1)
+X = []
+while day_start <= day_end:
+    X.append(str(day_start))
+    day_start += time_delta
+
+
 
 # function set
 def build_banner():
@@ -59,27 +73,27 @@ def build_banner():
     return html.Div(
         id='banner',
         className='banner',
-        children=[
-            html.Div(
-                id='banner-text',
-                children=[
-                    html.H5('Infiark - 企業用電量預測&異常檢測'),
-                    html.H6('企業儀表板'),
-                    # build_button('buttons', 'login-button', 'buttons', '登入'),
-                ],
-            ),
-            html.Div(
-                id='banner-logo',
-                children=[
-                    html.Button(
-                        id='learn-more-button',
-                        children='LEARN MORE',
-                        n_clicks=0,
-                    ),
-                    html.Img(id='logo', src=app.get_asset_url('dash-logo-new.png')),    # 之後在換圖
-                ]
-            )
-        ]
+        # children=[
+        #     html.Div(
+        #         id='banner-text',
+        #         children=[
+        #             html.H5('Infiark - 企業用電量預測&異常檢測'),
+        #             html.H6('企業儀表板'),
+        #             # build_button('buttons', 'login-button', 'buttons', '登入'),
+        #         ],
+        #     ),
+        #     html.Div(
+        #         id='banner-logo',
+        #         children=[
+        #             html.Button(
+        #                 id='learn-more-button',
+        #                 children='LEARN MORE',
+        #                 n_clicks=0,
+        #             ),
+        #             html.Img(id='logo', src=app.get_asset_url('dash-logo-new.png')),    # 之後在換圖
+        #         ]
+        #     )
+        # ]
     )
 
 # 'Model-Anomaly-Page'
@@ -175,6 +189,7 @@ def build_quick_stats_panel():
                         size=50,
                     ),
                 ],
+                # style={'display': 'inline-block', 'width' : '50%', 'height': '50%'}
             ),
             # html.Div(
             #     id='card-2',
@@ -213,13 +228,23 @@ def build_chart_panel(model_id):
     # *** 這邊可以改變圖的style設計
     data = get_data_from_api(id_=model_id)
     mape, mse, mae = data['mape'], data['mse'], data['mae']
-    X = list(range(len(data['y_real'])))
+    
+    # X = list(range(len(data['y_real'])))        # 改成日期
+    # ***
+    global X
 
     fig = go.Figure(
-        layout=go.Layout(title=go.layout.Title(text=f'MAPE: {round(mape, 3)}  /  MSE: {round(mse, 3)}  /  MAE: {round(mae, 3)}')),
+        layout=go.Layout(title=go.layout.Title(text=f'MAPE: {round(mape, 3)}  /  MSE: {round(mse, 3)}  /  MAE: {round(mae, 3)}'),
+                         xaxis={'title': '時間(每小時)'},yaxis={'title': 'kw/kwh'}),
     )
-    fig.add_trace(go.Scatter(x=X, y=data['y_pred'], mode='lines', name='預測'))
-    fig.add_trace(go.Scatter(x=X, y=data['y_real'], mode='lines', name='實際'))
+    fig.add_trace(go.Scatter(x=X, y=data['y_pred'], 
+                            mode='lines', 
+                            name='預測值',
+                            dx=100,))
+    fig.add_trace(go.Scatter(x=X, y=data['y_real'], 
+                            mode='lines', 
+                            name='實際值',
+                            dx=100,))
     return html.Div(
         id='control-trends-container',
         className='twelve columns',
@@ -229,8 +254,11 @@ def build_chart_panel(model_id):
             dcc.Graph(
                 id='control-trends-live',
                 figure=fig,
-            )
-        ]
+            ),
+        ],
+        # 圖大小控制
+        style = {'display': 'inline-block', 
+                 'margin': '0px 0px 0px 130px'},
     )
 
 
@@ -325,15 +353,15 @@ app.layout = html.Div(
     id='big-app-container',
     children=[
         build_banner(),
-        html.Div(
-            id='app-container',
-            children=[
-                build_tabs(),
-            ]
-        ),
+        # html.Div(
+        #     id='app-container',
+        #     children=[
+        #         build_tabs(),
+        #     ]
+        # ),
         generate_dropdown('model-dropdown', 'model-dropdown', model_ids_options, True, 'Search a model id'),
         html.Br(),
-        generate_dropdown('loss-dropdown', 'loss-dropdown', loss_options, False, 'Search a metrics'),
+        # generate_dropdown('loss-dropdown', 'loss-dropdown', loss_options, False, 'Search a metrics'),
         # ?
         html.Div(
             id='app-content',
@@ -341,7 +369,7 @@ app.layout = html.Div(
                 html.Br(),
                 html.Iframe(
                     src='http://localhost:8003',
-                    width=1500,
+                    width=1000,
                     height=800,
                 ),
                 ]
@@ -356,20 +384,9 @@ app.layout = html.Div(
 # callbacks function
 @app.callback(
     Output('app-content', 'children'),
-    [Input('app-tabs', 'value'), Input('model-dropdown', 'value')],
+    [Input('model-dropdown', 'value')],
 )
-def render_tab_content(tab_switch, model_id):
-    if tab_switch == 'Model-Training-Page':
-        return [
-            html.Br(),
-            html.Iframe(
-                src='http://localhost:8003',
-                width=1500,
-                height=800,
-            ),
-        ]
-    elif tab_switch == 'Model-Anomaly-Page':
-        return 'wait a minute.'
+def render_tab_content(model_id):
     return html.Div(
         id='status-container',
         children=[
@@ -382,20 +399,49 @@ def render_tab_content(tab_switch, model_id):
         ],
     )
 
+# callbacks function
+# @app.callback(
+#     Output('app-content', 'children'),
+#     [Input('app-tabs', 'value'), Input('model-dropdown', 'value')],
+# )
+# def render_tab_content(tab_switch, model_id):
+#     if tab_switch == 'Model-Training-Page':
+#         return [
+#             html.Br(),
+#             html.Iframe(
+#                 src='http://localhost:8003',
+#                 width=1500,
+#                 height=800,
+#             ),
+#         ]
+#     elif tab_switch == 'Model-Anomaly-Page':
+#         return 'wait a minute.'
+#     return html.Div(
+#         id='status-container',
+#         children=[
+#             build_quick_stats_panel(),
+#             html.Div(
+#                 id='graphs-container',
+#                 children=[build_chart_panel(model_id)]
+#             ),
+            
+#         ],
+#     )
 
-@app.callback(
-    Output('markdown', 'style'),
-    [Input('learn-more-button', 'n_clicks'), 
-     Input('markdown_close', 'n_clicks')],
-)
-def update_click_output(button_click, close_click):
-    ctx = dash.callback_context
 
-    if ctx.triggered:
-        prop_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        if prop_id == 'learn-more-button':
-            return {'display': 'block'}
-    return {'display': 'none'}
+# @app.callback(
+#     Output('markdown', 'style'),
+#     [Input('learn-more-button', 'n_clicks'), 
+#      Input('markdown_close', 'n_clicks')],
+# )
+# def update_click_output(button_click, close_click):
+#     ctx = dash.callback_context
+
+#     if ctx.triggered:
+#         prop_id = ctx.triggered[0]['prop_id'].split('.')[0]
+#         if prop_id == 'learn-more-button':
+#             return {'display': 'block'}
+#     return {'display': 'none'}
 
 
 @app.callback(

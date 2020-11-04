@@ -139,11 +139,11 @@ def parse_content(contents, filename, date):
 
         html.Hr(),
         # 
-        html.Div('Raw Content'),
-        html.Pre(contents[0:200] + '...', style={
-            'whiteSpace': 'pre-wrap',
-            'wordBreak': 'break-all'
-        })
+        # html.Div('Raw Content'),
+        # html.Pre(contents[0:200] + '...', style={
+        #     'whiteSpace': 'pre-wrap',
+        #     'wordBreak': 'break-all'
+        # })
     ])
 
 
@@ -173,17 +173,17 @@ app.layout = html.Div([
      Output('train-button', 'label'),
      Output('train-button', 'buttonText'),
      ],
-    [Input('train-button', 'n_clicks'),
-     Input('model-radio-select', 'value'),
-     Input('loss-radio-select', 'value')]
-     )
+    [Input('train-button', 'n_clicks')],
+    [State('model-radio-select', 'value'),      # 善用State比較合理。
+     State('loss-radio-select', 'value')]
+     )              
 def update_model_train(n_clicks, model_str, loss_str):
     global id_
     model_func = model_mapping[model_str]
     model = model_func(loss=loss_str)
     print(model_str, n_clicks)
     if n_clicks == 0:
-        return '請點擊訓練按鈕以進行訓練', '待命', 'START'
+        return '請點擊訓練按鈕以進行訓練', '待命', f'START: {n_clicks}'
     if n_clicks > 0:
         if model_str == 'dnn':
             is_rnn= False
@@ -192,14 +192,16 @@ def update_model_train(n_clicks, model_str, loss_str):
         model = train_model(model=model, model_str=model_str, x_filename=f'./datasets/x_{id_}.csv', y_filename=f'./datasets/y_{id_}.csv', shuffle=True)
         model.save(f'./models/dash/{model_str}_{n_clicks}.h5')
         y_real, y_pred, mape, mse, mae, y = predict(id_=id_, model=model, is_rnn=is_rnn)
+        
+        # 模型訓練要展示的字串
+        model_show_string = ''
+
         print('MAPE: ', mape)
         print('MSE: ', mse)
         print('MAE: ', mae)
         print('訓練結束')
-        if n_clicks % 2 == 0:
-            return '請再一次點擊按鈕繼續訓練', '暫停', 'START'
-        else:
-            return '點擊按鈕暫停', '訓練中' , 'STOP'
+
+        return '點擊按鈕繼續訓練新的Model', '訓練中', f'START: {n_clicks}'
 
 
 @app.callback(

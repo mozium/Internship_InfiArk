@@ -17,12 +17,12 @@ db_reader = pymysql.connect(
     host = "127.0.0.1",
     port = int(3306),
     user = 'root',
-    passwd = '',
-    db = 'web',
+    passwd = '123456',
+    db = 'infiark',
     charset = 'utf8mb4',
     cursorclass = pymysql.cursors.DictCursor)
 
-db_writer = create_engine('mysql+pymysql://root:@127.0.0.1/web')
+db_writer = create_engine('mysql+pymysql://root:@127.0.0.1')
 usr_data = pd.read_sql_query("SELECT * FROM usr", db_reader)
 
 # Session Initialization
@@ -97,4 +97,4 @@ def internal_server_error(e):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True, port=8001)
