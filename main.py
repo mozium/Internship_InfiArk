@@ -17,8 +17,8 @@ db_reader = pymysql.connect(
     host = "127.0.0.1",
     port = int(3306),
     user = 'root',
-    passwd = '123456',
-    db = 'infiark',
+    passwd = '',
+    db = 'web',
     charset = 'utf8mb4',
     cursorclass = pymysql.cursors.DictCursor)
 
