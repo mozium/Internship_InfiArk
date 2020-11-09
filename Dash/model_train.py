@@ -189,7 +189,7 @@ def update_model_train(n_clicks, model_str, loss_str):
             is_rnn= False
         else:
             is_rnn = True
-        model = train_model(model=model, model_str=model_str, x_filename=f'./datasets/x_{id_}.csv', y_filename=f'./datasets/y_{id_}.csv', shuffle=True)
+        model, history = train_model(model=model, model_str=model_str, x_filename=f'./datasets/x_{id_}.csv', y_filename=f'./datasets/y_{id_}.csv', shuffle=True)
         model.save(f'./models/dash/{model_str}_{n_clicks}.h5')
         y_real, y_pred, mape, mse, mae, y = predict(id_=id_, model=model, is_rnn=is_rnn)
         

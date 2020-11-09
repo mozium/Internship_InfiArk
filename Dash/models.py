@@ -25,8 +25,9 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # 模型資料讀入與前處理
 def get_data(x_filename, y_filename, shuffle):
-    x_data = pd.read_csv(x_filename)
-    y_data = pd.read_csv(y_filename)
+    if type(x_filename) == type(''):
+        x_data = pd.read_csv(x_filename)
+        y_data = pd.read_csv(y_filename)
 
     x_data = x_data.drop(columns=['id', 'weekday', 'hr'])
     y_data = y_data.drop(columns=['id'])
@@ -158,26 +159,26 @@ def train_model(model, model_str, x_filename, y_filename, shuffle):
     x_train, x_test, y_train, y_test, x_train_rnn, x_test_rnn = get_data(x_filename, y_filename, shuffle)
 
     if model_str == 'dnn':
-        model.fit(x_train, y_train, 
+        history = model.fit(x_train, y_train, 
             batch_size=512, epochs=1000, 
             validation_data=(x_test, y_test),
             callbacks=[earlystop]
             )
     elif model_str == 'lstm':
-        model.fit([x_train_rnn[:, 168:], x_train_rnn[:, 0:168]], y_train, 
+        history = model.fit([x_train_rnn[:, 168:], x_train_rnn[:, 0:168]], y_train, 
                     batch_size=512, epochs=5, 
                     validation_data=([x_test_rnn[:, 168:], x_test_rnn[:, 0:168]], y_test), 
                     callbacks=[earlystop]
                     )
     else:
         # gru
-        model.fit([x_train_rnn[:, 168:], x_train_rnn[:, 0:168]], y_train, 
+        history = model.fit([x_train_rnn[:, 168:], x_train_rnn[:, 0:168]], y_train, 
                     batch_size=512, epochs=5, 
                     validation_data=([x_test_rnn[:, 168:], x_test_rnn[:, 0:168]], y_test), 
                     callbacks=[earlystop]
                     )
     
-    return model
+    return model, history
             
 
     
