@@ -1,4 +1,4 @@
-#ReadMe
+# ReadMe
 
 ## To run the application
 1. Assign FLASK environment variable
