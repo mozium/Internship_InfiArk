@@ -1,5 +1,7 @@
 # ReadMe
 
+The repository is dedicated to the group project done during the internship, co-supervised by InfiArk Technology and Industrial Technology Research Institute.
+
 ## To run the application
 1. Assign FLASK environment variable
 ```
